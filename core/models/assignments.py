@@ -50,10 +50,12 @@ class Assignment(db.Model):
             assertions.assert_found(assignment, 'No assignment with this id was found')
             assertions.assert_valid(assignment.state == AssignmentStateEnum.DRAFT,
                                     'only assignment in draft state can be edited')
+            assertions.assert_valid(assignment.content is not None,'content cannot be empty')
 
             assignment.content = assignment_new.content
         else:
             assignment = assignment_new
+            assertions.assert_valid(assignment.content is not None,'content cannot be empty')
             db.session.add(assignment_new)
 
         db.session.flush()
